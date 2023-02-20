@@ -1,5 +1,4 @@
-#ifndef ECHOCONTROLLER_CLASS
-#define ECHOCONTROLLER_CLASS
+#pragma once
 
 #include <iostream>
 #include <cstring>
@@ -11,19 +10,8 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
-
-#include "Connections.hpp"
-
 #define MAX_CONNECTIONS 4096
 #define BACKLOG 512
-
-enum
-{
-	ACCEPT,
-	READ,
-	WRITE,
-	TIMEOUT
-};
 
 class EchoController
 {
@@ -37,5 +25,3 @@ class EchoController
 	private:
 		int sock_listen_fd;
 };
-
-#endif

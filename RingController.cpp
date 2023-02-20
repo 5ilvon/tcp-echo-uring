@@ -16,12 +16,12 @@ int RingController::waitComplition() {
 	return io_uring_peek_batch_cqe(&ring, cqes, BACKLOG);
 }
 
-conn_info* RingController::getComplitionData() {
-	return (conn_info *)io_uring_cqe_get_data(cqe);
+Connection* RingController::getComplitionData() {
+	return (Connection *)io_uring_cqe_get_data(cqe);
 }
 
 // Add accept in SQ, fd - descriptor sock connection
-void RingController::prepareAcceptEntry(int fd, conn_info *data)
+void RingController::prepareAcceptEntry(int fd, Connection *data)
 {
 	// Get pointer to first SQE
 	io_uring_sqe *sqe = io_uring_get_sqe(&ring);
@@ -35,7 +35,7 @@ void RingController::prepareAcceptEntry(int fd, conn_info *data)
 /**
  *  Add recv in SQ.
  */
-void RingController::prepareReadEntry(int fd, size_t size, conn_info *data)
+void RingController::prepareReadEntry(int fd, size_t size, Connection *data)
 {
 	// Get pointer to first SQE
 	io_uring_sqe *sqe = io_uring_get_sqe(&ring);
@@ -49,7 +49,7 @@ void RingController::prepareReadEntry(int fd, size_t size, conn_info *data)
 /**
  *  Add send in SQ buff.
  */
-void RingController::prepareWriteEntry(int fd, size_t size, conn_info *data)
+void RingController::prepareWriteEntry(int fd, size_t size, Connection *data)
 {
 	// Get pointer to first SQE
 	io_uring_sqe *sqe = io_uring_get_sqe(&ring);
@@ -61,7 +61,7 @@ void RingController::prepareWriteEntry(int fd, size_t size, conn_info *data)
 	io_uring_sqe_set_data(sqe, data);
 }
 
-void RingController::prepareTimeoutEntry(int fd, conn_info *data) {
+void RingController::prepareTimeoutEntry(int fd, Connection *data) {
 	time_t seconds = 5;
 	static struct __kernel_timespec ts = {.tv_sec = seconds, .tv_nsec = 0};
 

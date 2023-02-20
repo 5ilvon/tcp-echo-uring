@@ -1,5 +1,4 @@
-#ifndef RINGCONTROLLER_CLASS
-#define RINGCONTROLLER_CLASS
+#pragma once
 
 #include <iostream>
 #include <cstring>
@@ -10,11 +9,10 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
-#include "Connections.hpp"
+#include "Connection.hpp"
 
 #define MAX_CONNECTIONS 4096
 #define BACKLOG 512
-#define MAX_MESSAGE_LEN 2048
 
 class RingController
 {
@@ -26,15 +24,15 @@ class RingController
 	public:
 		void submitEntries();
 		int waitComplition();
-		conn_info* getComplitionData();
+		Connection* getComplitionData();
 		int getSqeRes();
 
 		void seenCqe();
 
-		void prepareAcceptEntry(int, conn_info *);
-		void prepareTimeoutEntry(int, conn_info *);
-		void prepareReadEntry(int fd, size_t size, conn_info *);
-		void prepareWriteEntry(int fd, size_t size, conn_info *);
+		void prepareAcceptEntry(int, Connection *);
+		void prepareTimeoutEntry(int, Connection *);
+		void prepareReadEntry(int fd, size_t size, Connection *);
+		void prepareWriteEntry(int fd, size_t size, Connection *);
 
 	private:
 		//struct client_info{int desc; int socket; char data;} client_info;
@@ -42,5 +40,3 @@ class RingController
 		io_uring_cqe *cqe;
 		io_uring_cqe *cqes[BACKLOG];
 };
-
-#endif

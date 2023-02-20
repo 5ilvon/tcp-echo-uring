@@ -7,6 +7,7 @@ project(echo_serv
 
 add_executable(
 	echo echo-serv.cpp 
+	Connection.cpp
 	EchoController.cpp 
 	RingController.cpp )
 target_link_libraries(echo uring)
